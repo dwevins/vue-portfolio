@@ -1,7 +1,19 @@
 <template>
     <div id="app">
-        <project v-for="project in projectList"></project>
-        <project-modal></project-modal>
+        <div class="projects-container">
+            <project
+                v-for="(project, index) in projectList"
+                v-bind:project="project"
+                v-bind:index="index"
+                v-bind:key="index"
+                v-on:openProject="openProject">
+            </project>
+        </div>
+        <project-modal
+            v-if="currentProject"
+            v-bind:project="currentProject"
+            v-on:closeProject="closeProject">
+        </project-modal>
     </div>
 </template>
 
@@ -26,8 +38,12 @@
         },
 
         methods: {
-            openProject(id) {
-                this.currentProject = this.projectList[id];
+            openProject(index) {
+                this.currentProject = this.projectList[index];
+            },
+
+            closeProject() {
+                this.currentProject = null;
             },
         },
     };
@@ -41,5 +57,12 @@
         text-align: center;
         color: #2c3e50;
         margin-top: 60px;
+    }
+
+    .projects-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 1rem;
+        max-width: 200rem;
     }
 </style>
